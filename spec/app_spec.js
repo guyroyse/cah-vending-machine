@@ -1,33 +1,42 @@
-describe("Application", function() {
+describe("Vending Machine", function() {
+
+  var machine;
 
   beforeEach(function() {
-    setFixtures('<div id="awesome"></div>');
+      machine = VendingMachine.create();
   });
 
-  when("made awesome", function() {
+  it("displays INSERT COIN when created", function() {
+    expect(machine.display()).toBe("INSERT COIN");
+  });
+
+  it("displays $0.05 when a nickel is inserted", function() {
+    machine.insertCoin("nickel");
+    expect(machine.display()).toBe("$0.05");
+  });
+
+  it("displays $0.10 when a dime is inserted", function() {
+    machine.insertCoin("dime");
+    expect(machine.display()).toBe("$0.10");
+  });
+
+  it("displays $0.25 when a quarter is inserted", function() {
+    machine.insertCoin("quarter");
+    expect(machine.display()).toBe("$0.25");
+  });
+
+  when("a stone is inserted", function() {
 
     beforeEach(function() {
-      App.makeAwesome();
+      machine.insertCoin("stone");
     });
 
-    it("is awesome", function() {
-      expect(App.awesome()).toBe(true);
+    it("displays INVALID COIN", function() {
+      expect(machine.display()).toBe("INVALID COIN");
     });
 
-    it("contains awesomeness", function() {
-      expect($('#awesome')).toContainText("Awesome App is Awesome");
-    });
-
-  });
-
-  when("not made awesome", function() {
-
-    it("is not awesome", function() {
-      expect(App.awesome()).toBe(false);
-    });
-
-    it("does not contain awesomeness", function() {
-      expect($('#awesome')).not.toContainText("Awesome App is Awesome");
+    it("puts the stone in the coin return", function() {
+      expect(machine.coinReturn()).toEqual(['stone']);
     });
 
   });
